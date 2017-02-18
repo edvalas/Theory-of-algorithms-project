@@ -7,11 +7,20 @@
 ## Lecturer: Dr. Ian Mcloughlin
 
 ### Introduction
-This is a project for the above module, which requires to program a maths game: Countdown Numbers. 
+This is a project for the above module, which requires to program a maths game: Countdown Numbers.
 
-**explanation of the game here to come!!**
+This project will be implemented in the racket programming language.
 
-This project will be implemented in the racket programming language
+###The Game
+The game of countdown numbers involves a list of numbers, which include: `1,1,2,2,3,3,4,4,5,5,6,6,7,7,8,8,9,9,10,10,25,50,75,100`. 
+
+Six numbers are choosen at random from the list only once. Example of choosen numbers: `1,5,3,10,50,5`.
+
+A **target number**, which is a random number also in the range of 101 to 999 inclusive is choosen randomly.
+
+The goal of the game is to use the six random numbers and try to come up with a maths equation using the operators `+, -, *, /` , such that the equation when evaluated will equal the target number. There is posibilities such as there being no correct equation from the six numbers, which will evaluate to the target number or there can be one or more solutions to reach the target number.
+
+This program should take 6 numbers and evaluate all posibble equations using those 6 numbers and math operators to try reach the target number. Then output all of the correct solutions, if there are any.
 
 ### My Approach
 From looking at some maths examples and thinking about this problem mathematically, I believe that this is a testing of all posible outcomes problem, which is a Brute Force approach in computing.
