@@ -35,3 +35,24 @@ targetnumber
 
 ;call function to add 6 random elements to our null list random6 from gameNumbers list.
 (randomElement gameNumbers)
+
+;permutated6 is a list of our random6 numbers list but permutated
+;for later use to create all permutations of equations.
+(define permutated6 (permutations random6))
+
+;define our base namespace to allow eval function to eval strings
+(define ns (make-base-namespace))
+
+;variable that will hold the maths equation
+(define mathsEq 0)
+
+;(+(-(+(/(- 10 2)2)2)3)1) = 4
+;function that takes a list of numbers and operators and constructs a maths equation,
+;sets it equal to the mathsEq variable to we can use it and evaluate it.
+(define (equation perms ops)
+  (set! mathsEq (quasiquote ((unquote (fifth ops))((unquote (fourth ops)) ((unquote (third ops)) ((unquote (second ops)) ((unquote (first ops)) (unquote (first perms)) (unquote (second perms))) (unquote (third perms))) (unquote (fourth perms))) (unquote(fifth perms))) (unquote(sixth perms)))))
+  )
+
+(equation (list 10 2 2 2 3 1) '(- / + - +))
+mathsEq
+(eval mathsEq ns)
