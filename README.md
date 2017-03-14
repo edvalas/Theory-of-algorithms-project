@@ -34,3 +34,13 @@ For my approach to solve this problem, I have broken this problem down into a fe
 5. If the equation such as above equals our target number, we want to output that equation to an accumulator list, so it can accumulate all of the correct answers for us for display at the end of all comparisons or it will be empty if there are no solutions to reach our target number.
 
 There is a problem with this approach, which is that there are redundant checks, which result in the calculation going into fractions or negative numbers, but it is brute force approach and these redundant checks will not make it, on the correct solution list, which is our accumulator list.
+
+### Development
+Working solution completed 14/3/17. At worst case, if all numbers are distict there are 737280 maths equations formed and evaluated.
+At the moment there are a lot of duplicate solutions eg. 2 + 3 * 5 and 2 + 5 * 3...
+The run time is around 2 minutes 25 seconds with 737280 iterations if all numbers are distinct.
+
+Next steps:
+1. Review my approach of comparing number permutations vs operator permutations with repetition.
+2. Check if the operator list can be reduced as it produces many duplicate solutions currently, meaning there are many redundant checks.
+3. Reduce number of checks by adding rules to make sure not to evaluate equations which go into negative numbers or decimals.
