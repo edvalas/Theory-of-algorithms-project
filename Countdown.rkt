@@ -37,22 +37,68 @@ targetnumber
 (randomElement gameNumbers)
 
 ;permutated6 is a list of our random6 numbers list but permutated
-;for later use to create all permutations of equations.
-(define permutated6 (permutations random6))
+;for later use to create all permutations of equations. Also
+;use remove duplicates function to remove permutations that are the same,
+;if 2 of same numbers are picked..
+(define permutated6 (remove-duplicates (permutations random6)))
+(length permutated6)
+
+;ops is a list of the operators, opsCP is cartisian product
+;or permutations with repitition of the ops list
+(define ops (list '+ '- '* '/))
+(define opsCP (cartesian-product ops ops ops ops ops))
+(length opsCP)
 
 ;define our base namespace to allow eval function to eval strings
 (define ns (make-base-namespace))
 
 ;variable that will hold the maths equation
 (define mathsEq 0)
+;accumulator which will hold correct solutions
+(define accumulator null)
+;value variable which holds the evaluation of each maths equation,
+;which is compared to the target number
+(define value 0)
+;counter to count how many iterations occur
+(define counter 0)
 
 ;(+(-(+(/(- 10 2)2)2)3)1) = 4
 ;function that takes a list of numbers and operators and constructs a maths equation,
 ;sets it equal to the mathsEq variable to we can use it and evaluate it.
-(define (equation perms ops)
-  (set! mathsEq (quasiquote ((unquote (fifth ops))((unquote (fourth ops)) ((unquote (third ops)) ((unquote (second ops)) ((unquote (first ops)) (unquote (first perms)) (unquote (second perms))) (unquote (third perms))) (unquote (fourth perms))) (unquote(fifth perms))) (unquote(sixth perms)))))
-  )
+(define (equation perms ops numb a)
+  (if (null? ops)
+      0
+      (begin
+       ;increment counter
+      (set! counter (+ counter 1))
+      ;create maths equation
+      (set! mathsEq (quasiquote ((unquote (fifth (first ops)))((unquote (fourth (first ops))) ((unquote (third (first ops))) ((unquote (second (first ops))) ((unquote (first (first ops))) (unquote (first perms)) (unquote (second perms))) (unquote (third perms))) (unquote (fourth perms))) (unquote(fifth perms))) (unquote(sixth perms)))))
+      ;set value to be the eval of the string maths equation
+      (set! value (eval mathsEq ns))
+      ;if value == targetnumber, call function again and add mathsEq to accumulator,
+      ;otherwise just call the function again.
+      (if (= value numb)
+          (equation perms (cdr ops) numb (set! accumulator (cons mathsEq accumulator)))
+          (equation perms (cdr ops) numb a)))))
 
-(equation (list 10 2 2 2 3 1) '(- / + - +))
-mathsEq
-(eval mathsEq ns)
+;main function which is called to run the project,
+(define (mainFunc perms ops numb a)
+  (if (null? perms)
+      0
+      (begin
+        ;call equation function to make equations for car of perms list vs whole list
+        ;of operators
+        (equation (car perms) ops numb a)
+        ;after call mainfunc with next element on perms list
+        (mainFunc (cdr perms) ops numb a))))
+
+;call function
+(mainFunc permutated6 opsCP targetnumber accumulator)
+
+(quasiquote ("iterations:" (unquote counter)))
+(quasiquote ("solutions:" (unquote (length accumulator))))
+
+;output of solutions, if there are any
+(if (null? accumulator)
+    (quote (no solutions found))
+    accumulator)
