@@ -1,0 +1,155 @@
+  2 3 4 5
+  + * -
+  calculations are made same way I calculate equations in racket eg. first operator , first two operands then next operator and result of previous calculation and next operand..
+  
+  checking number permutations vs one element of cartesian product of operators.
+
+  .1 or .2 are markers for different solution for our target number.
+  if we were looking for 15, we can see there are 4 answers or 2 answers and 2 duplicate answers with one number turned around, which is the same equation.
+  based on this pattern of having 2 of same answer one after another, we can create a function to filter this list to basically remove every other element
+  or cons every other element to a different list, therefore reducing our permuated number list by half, which also reduces number of iterations by half.
+  
+  (2+3*4-5) 15 . 1
+  (3+2*4-5) 15 . 1
+  (2+4*3-5) 13 . 1
+  (4+2*3-5) 13 . 1
+  (3+4*2-5) 9 . 1
+  (4+3*2-5) 9 . 1
+  (2+3*5-4) 21 . 1
+  (3+2*5-4) 21 . 1
+  (2+5*3-4) 17 . 1
+  (5+2*3-4) 17 . 1
+  (3+5*2-4) 12 . 1
+  (5+3*2-4) 12 . 1
+  (2+4*5-3) 27 . 1
+  (4+2*5-3) 27 . 1
+  (2+5*4-3) 25 . 1
+  (5+2*4-3) 25 . 1
+  (4+5*2-3) 15 . 2
+  (5+4*2-3) 15 . 2
+  (3+4*5-2) 33 . 1
+  (4+3*5-2) 33 . 1
+  (3+5*4-2) 30 . 1
+  (5+3*4-2) 30 . 1
+  (4+5*3-2) 25 . 2
+  (5+4*3-2) 25 . 2
+  
+  If we have a 2 of the same number, we use remove duplicate but then that will not make it posible to remove every other element,
+  as we dont have the pattern of 2 same answer one after another...
+  
+  + * - (1 2 2 4) 2
+  + * - (2 1 2 4) 2
+  + * - (2 2 1 4) 0
+  + * - (1 2 4 2) 10
+  + * - (2 1 4 2) 10
+  + * - (1 4 2 2) 8
+  + * - (4 1 2 2) 8
+  + * - (2 4 1 2) 4
+  + * - (4 2 1 2) 4
+  + * - (2 2 4 1) 15
+  + * - (2 4 2 1) 11
+  + * - (4 2 2 1) 11
+  
+  To avoid that issue, firstly I should filter the list by taking out every other element, which will leave the duplicates and then call the remove duplicate function.
+  
+  + * - (1 2 2 4) 2 . 1
+  + * - (2 1 2 4) 2 . 1
+  + * - (1 2 2 4) 2 . 2
+  + * - (2 1 2 4) 2 . 2
+  + * - (2 2 1 4) 0 . 1
+  + * - (2 2 1 4) 0 . 1
+  + * - (1 2 4 2) 10 . 1
+  + * - (2 1 4 2) 10 . 1
+  + * - (1 4 2 2) 8 . 1
+  + * - (4 1 2 2) 8 . 1
+  + * - (2 4 1 2) 4 . 1
+  + * - (4 2 1 2) 4 . 1
+  + * - (1 2 4 2) 10 . 2
+  + * - (2 1 4 2) 10 . 2
+  + * - (1 4 2 2) 8 . 2
+  + * - (4 1 2 2) 8 . 2
+  + * - (2 4 1 2) 4 . 2
+  + * - (4 2 1 2) 4 . 2
+  + * - (2 2 4 1) 15 . 1
+  + * - (2 2 4 1) 15 . 1
+  + * - (2 4 2 1) 11 . 1
+  + * - (4 2 2 1) 11 . 1
+  + * - (2 4 2 1) 11 . 2
+  + * - (4 2 2 1) 11 . 2
+  
+  for six operands and 5 operators, for first six permutations we see the same pattern as above.
+  
+  + * - + + (1 2 3 4 5 6) 16
+  + * - + + (2 1 3 4 5 6) 16
+  + * - + + (1 3 2 4 5 6) 15
+  + * - + + (3 1 2 4 5 6) 15
+  + * - + + (2 3 1 4 5 6) 12
+  + * - + + (3 2 1 4 5 6) 12
+  
+  checking same number vs all operation posibilities.
+  some if statements here on not allowing remainders for division and negatives takes out alot of iterations.
+  
+  (+ + +) 2 3 4 5 = 14
+  (+ + -) 2 3 4 5 = 4
+  (+ + *) 2 3 4 5 = 45
+  (+ + /) 2 3 4 5 = ..
+  (+ - +) 2 3 4 5 = 6
+  (+ - -) 2 3 4 5 = ..
+  (+ - *) 2 3 4 5 = 1
+  (+ - /) 2 3 4 5 = ..
+  (+ * +) 2 3 4 5 = 25
+  (+ * -) 2 3 4 5 = 15
+  (+ * *) 2 3 4 5 = 100
+  (+ * /) 2 3 4 5 = 4
+  (+ / +) 2 3 4 5 = ..
+  (+ / -) 2 3 4 5 = ..
+  (+ / *) 2 3 4 5 = ..
+  (+ / /) 2 3 4 5 = ..
+  (- + +) 2 3 4 5 = ..
+  (- + -) 2 3 4 5 = ..
+  (- + *) 2 3 4 5 = ..
+  (- + /) 2 3 4 5 = ..
+  (- - +) 2 3 4 5 = ..
+  (- - -) 2 3 4 5 = ..
+  (- - *) 2 3 4 5 = ..
+  (- - /) 2 3 4 5 = ..
+  (- * +) 2 3 4 5 = ..
+  (- * -) 2 3 4 5 = ..
+  (- * *) 2 3 4 5 = ..
+  (- * /) 2 3 4 5 = ..
+  (- / +) 2 3 4 5 = ..
+  (- / -) 2 3 4 5 = ..
+  (- / *) 2 3 4 5 = ..
+  (- / /) 2 3 4 5 = ..
+  (* + +) 2 3 4 5 = 15
+  (* + -) 2 3 4 5 = 5
+  (* + *) 2 3 4 5 = 50
+  (* + /) 2 3 4 5 = 2
+  (* - +) 2 3 4 5 = 7
+  (* - -) 2 3 4 5 = ..
+  (* - *) 2 3 4 5 = 10
+  (* - /) 2 3 4 5 = ..
+  (* * +) 2 3 4 5 = 29
+  (* * -) 2 3 4 5 = 19
+  (* * *) 2 3 4 5 = 120
+  (* * /) 2 3 4 5 = ..
+  (* / +) 2 3 4 5 = ..
+  (* / -) 2 3 4 5 = ..
+  (* / *) 2 3 4 5 = ..
+  (* / /) 2 3 4 5 = ..
+  (/ + +) 2 3 4 5 = .. 
+  (/ + -) 2 3 4 5 = ..
+  (/ + *) 2 3 4 5 = ..
+  (/ + /) 2 3 4 5 = ..
+  (/ - +) 2 3 4 5 = ..
+  (/ - -) 2 3 4 5 = ..
+  (/ - *) 2 3 4 5 = ..
+  (/ - /) 2 3 4 5 = ..
+  (/ * +) 2 3 4 5 = ..
+  (/ * -) 2 3 4 5 = ..
+  (/ * *) 2 3 4 5 = ..
+  (/ * /) 2 3 4 5 = ..
+  (/ / +) 2 3 4 5 = ..
+  (/ / -) 2 3 4 5 = .. 
+  (/ / *) 2 3 4 5 = ..
+  (/ / /) 2 3 4 5 = ..
