@@ -1,13 +1,19 @@
   2 3 4 5
   + * -
-  calculations are made same way I calculate equations in racket eg. first operator , first two operands then next operator and result of previous calculation and next operand..
+  calculations are made same way I calculate equations in racket eg. first operator , 
+  first two operands then next operator and result of previous calculation and next operand..
   
   checking number permutations vs one element of cartesian product of operators.
 
   .1 or .2 are markers for different solution for our target number.
-  if we were looking for 15, we can see there are 4 answers or 2 answers and 2 duplicate answers with one number turned around, which is the same equation.
-  based on this pattern of having 2 of same answer one after another, we can create a function to filter this list to basically remove every other element
-  or cons every other element to a different list, therefore reducing our permuated number list by half, which also reduces number of iterations by half.
+  
+  if we were looking for 15, we can see there are 4 answers or 2 answers and 2 duplicate answers with one number turned around,
+  which is the same equation.
+  
+  based on this pattern of having 2 of same answer one after another, 
+  we can create a function to filter this list to basically remove every other element
+  or cons every other element to a different list, therefore reducing our permuated number list by half, 
+  which also reduces number of iterations by half.
   
   (2+3*4-5) 15 . 1
   (3+2*4-5) 15 . 1
@@ -50,7 +56,8 @@
   + * - (2 4 2 1) 11
   + * - (4 2 2 1) 11
   
-  To avoid that issue, firstly I should filter the list by taking out every other element, which will leave the duplicates and then call the remove duplicate function.
+  To avoid that issue, firstly I should filter the list by taking out every other element, 
+  which will leave the duplicates and then call the remove duplicate function.
   
   + * - (1 2 2 4) 2 . 1
   + * - (2 1 2 4) 2 . 1
