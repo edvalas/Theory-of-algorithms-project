@@ -4,6 +4,8 @@
 ;https://docs.racket-lang.org/reference/generic-numbers.html#%28part._.Random_.Numbers%29
 ;https://docs.racket-lang.org/reference/pairs.html#%28def._%28%28quote._~23~25kernel%29._list-ref%29%29
 ;https://www.rosettacode.org/wiki/Pick_random_element
+;https://docs.racket-lang.org/reference/pairs.html#%28def._%28%28lib._racket%2Flist..rkt%29._first%29%29
+;http://docs.racket-lang.org/reference/quasiquote.html
 
 ;gamenumbers is our starting list for the game.
 (define gameNumbers (list 1 1 2 2 3 3 4 4 5 5 6 6 7 7 8 8 9 9 10 10 25 50 75 100))
@@ -40,8 +42,32 @@ targetnumber
 ;for later use to create all permutations of equations. Also
 ;use remove duplicates function to remove permutations that are the same,
 ;if 2 of same numbers are picked..
-(define permutated6 (remove-duplicates (permutations random6)))
+;permutated6-filtered is a list which will hold every other element of the permutated6 list.
+(define permutated6 (permutations random6))
 (length permutated6)
+(define permutated6-filtered null)
+
+;this function here goes over a list and pushes every other element to another list.
+;this is because from permutations every 2 elements eg 1st and 2nd, 3rd and 4th
+;have one number swapped around, which produces many duplicate answers - see patterns.txt
+(define (flst-aux l n)
+  (if (= n (length l))
+      0
+      (begin
+        (set! permutated6-filtered (cons (list-ref l n) permutated6-filtered))
+        (set! n (+ n 2))
+        (flst-aux l n))))
+;define function to call flst-aux with 0 as constant
+(define (flst l)
+  (flst-aux l 0))
+
+;filter the list
+(flst permutated6)
+(length permutated6-filtered)
+
+;remove duplicates AFTER filter - see patterns.txt
+(set! permutated6-filtered (remove-duplicates permutated6-filtered))
+(length permutated6-filtered)
 
 ;ops is a list of the operators, opsCP is cartisian product
 ;or permutations with repitition of the ops list
@@ -93,12 +119,13 @@ targetnumber
         (mainFunc (cdr perms) ops numb a))))
 
 ;call function
-(mainFunc permutated6 opsCP targetnumber accumulator)
+(mainFunc permutated6-filtered opsCP targetnumber accumulator)
 
-(quasiquote ("iterations:" (unquote counter)))
-(quasiquote ("solutions:" (unquote (length accumulator))))
-
+(set! accumulator (reverse accumulator))
 ;output of solutions, if there are any
 (if (null? accumulator)
     (quote (no solutions found))
     accumulator)
+
+(quasiquote ("iterations:" (unquote counter)))
+(quasiquote ("solutions:" (unquote (length accumulator))))
