@@ -44,3 +44,9 @@ Next steps:
 1. Review my approach of comparing number permutations vs operator permutations with repetition.
 2. Check if the operator list can be reduced as it produces many duplicate solutions currently, meaning there are many redundant checks.
 3. Reduce number of checks by adding rules to make sure not to evaluate equations which go into negative numbers or decimals.
+
+From further investigation into the patterns.txt file and manually looking at permutations, I have come to the conclusion that taking out every other element to shorten the length
+of the permutation list, only works 50% of the time or only with + and * operators. This is simply based on what number list we get Eg. 3 5 2 6 7 8, taking out the next permutation of
+5 3 2 6 7 8 is not good here as the first permutation will be handled by if statements which will not allow the equation going into negatives ie. subtracting a larger number from a
+smaller one or doing the same thing with division. These few simple rules of not allowing remainders on division and negative numbers from subtraction will take care of cutting out half the list
+and iterations anyways.

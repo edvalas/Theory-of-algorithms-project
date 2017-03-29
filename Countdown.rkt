@@ -43,10 +43,11 @@ targetnumber
 ;use remove duplicates function to remove permutations that are the same,
 ;if 2 of same numbers are picked..
 ;permutated6-filtered is a list which will hold every other element of the permutated6 list.
-(define permutated6 (permutations random6))
+;(define permutated6 (remove-duplicates (permutations random6)))
+(define permutated6 (remove-duplicates (permutations (list 7 2 25 50 5 3))))
 (length permutated6)
-(define permutated6-filtered null)
 
+#| this function only works when dealing with + and *, therefore is not useable.
 ;this function here goes over a list and pushes every other element to another list.
 ;this is because from permutations every 2 elements eg 1st and 2nd, 3rd and 4th
 ;have one number swapped around, which produces many duplicate answers - see patterns.txt
@@ -63,11 +64,9 @@ targetnumber
 
 ;filter the list
 (flst permutated6)
-(length permutated6-filtered)
+(length permutated6-filtered)|#
 
-;remove duplicates AFTER filter - see patterns.txt
-(set! permutated6-filtered (remove-duplicates permutated6-filtered))
-(length permutated6-filtered)
+
 
 ;ops is a list of the operators, opsCP is cartisian product
 ;or permutations with repitition of the ops list
@@ -94,6 +93,14 @@ targetnumber
 (define (equation perms ops numb a)
   (if (null? ops)
       0
+      (if (or (and (> (second perms) (first perms)) (equal? (first (first ops)) '-))
+        (and (> (second perms) (first perms)) (equal? (first (first ops)) '/))
+        (and (not (= (remainder (first perms) (second perms)) 0)) (equal? (first (first ops)) '/))
+        (and (< ((eval (first (first ops)) ns) (first perms) (second perms)) (third perms)) (equal? (second (first ops)) '-))
+        (and (< ((eval (first (first ops)) ns) (first perms) (second perms)) (third perms)) (equal? (second (first ops)) '/))
+        (and (equal? (second (first ops)) '/) (not (= (remainder ((eval (first (first ops)) ns) (first perms) (second perms)) (third perms)) 0)))
+         )
+         (equation perms (cdr ops) numb a) 
       (begin
        ;increment counter
       (set! counter (+ counter 1))
@@ -105,7 +112,7 @@ targetnumber
       ;otherwise just call the function again.
       (if (= value numb)
           (equation perms (cdr ops) numb (set! accumulator (cons mathsEq accumulator)))
-          (equation perms (cdr ops) numb a)))))
+          (equation perms (cdr ops) numb a))))))
 
 ;main function which is called to run the project,
 (define (mainFunc perms ops numb a)
@@ -119,7 +126,7 @@ targetnumber
         (mainFunc (cdr perms) ops numb a))))
 
 ;call function
-(mainFunc permutated6-filtered opsCP targetnumber accumulator)
+(mainFunc permutated6 opsCP targetnumber accumulator)
 
 (set! accumulator (reverse accumulator))
 ;output of solutions, if there are any
