@@ -50,3 +50,13 @@ of the permutation list, only works 50% of the time or only with + and * operato
 5 3 2 6 7 8 is not good here as the first permutation will be handled by if statements which will not allow the equation going into negatives ie. subtracting a larger number from a
 smaller one or doing the same thing with division. These few simple rules of not allowing remainders on division and negative numbers from subtraction will take care of cutting out half the list
 and iterations anyways.
+
+Added countdown-23456 file, which also checks for solutions of sizes 2 3 4 and 5. The code is very repetive as I worked from the size 6 methods and lists. I Cant get around to writing a more
+general function to handle different sized lists as I need 5 different lists of numbers and operators and equation patterns, hence the code is poor.
+This addition is adding around 100 thousand extra iterations to the overall run time making it now a total of around 400 thousand iterations when all of the game numbers are distinct.
+
+Some maths, adding lists of size 2 3 4 and 5 require to get combinations of the specific size and then permutations of each element as well.
+6 choose 2 gives 15 combinations and 15 x 2! gives a permutated list of size 2 elements with 30 elements.
+6 choose 3 gives 20 combinations and 20 x 3! gives a permutated list of size 3 elements with 120 elements.
+6 choose 4 gives 15 combinations and 15 x 4! gives a permutated list of size 4 elements with 360 elements.
+6 choose 5 gives 6 combinations and 6 x 5! gives a permutated list of size 5 elements with 720 elements.
