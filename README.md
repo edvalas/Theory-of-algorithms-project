@@ -56,7 +56,21 @@ general function to handle different sized lists as I need 5 different lists of 
 This addition is adding around 100 thousand extra iterations to the overall run time making it now a total of around 400 thousand iterations when all of the game numbers are distinct.
 
 Some maths, adding lists of size 2 3 4 and 5 require to get combinations of the specific size and then permutations of each element as well.
-6 choose 2 gives 15 combinations and 15 x 2! gives a permutated list of size 2 elements with 30 elements.
-6 choose 3 gives 20 combinations and 20 x 3! gives a permutated list of size 3 elements with 120 elements.
-6 choose 4 gives 15 combinations and 15 x 4! gives a permutated list of size 4 elements with 360 elements.
-6 choose 5 gives 6 combinations and 6 x 5! gives a permutated list of size 5 elements with 720 elements.
+
+6 choose 2 gives 15 combinations and 15 x 2! gives a permutated list of size 2 elements with 30 elements. For 2 operands we will need 1 operator. We have only 4 choices for our operand, which gives us 4 and 30 x 4 posible checks which evaluates to 120 iterations.
+
+6 choose 3 gives 20 combinations and 20 x 3! gives a permutated list of size 3 elements with 120 elements. For 3 operands we will need 2 operators. For 2 operators we have a choice of 4 x 4, which gives us 16 and 120 x 16 posible checks which evaluates to 1920 iterations.
+
+6 choose 4 gives 15 combinations and 15 x 4! gives a permutated list of size 4 elements with 360 elements. For 4 operands we will need 3 operators. For 3 operators we have a choice of 4 x 4 x 4, which gives us 64 and 360 x 64 posible checks which evaluates to 23040 iterations.
+
+6 choose 5 gives 6 combinations and 6 x 5! gives a permutated list of size 5 elements with 720 elements. For 5 operands we will need 4 operators. For 4 operators we have a choice of 4 x 4 x 4 x 4, which gives us 256 and 720 x 256 posible checks which evaluates to 184320 iterations.
+
+#### Reviewing my approach
+
+After doing some more research and thinking about this problem from a maths perspective, I cannot come up with a better solution than a brute force search of checking number permutations vs cartesian product of our operators. This makes 720 x 1024, which is 737280 checks but with some if statement logic we can cut that number in half or close to half, by simply checking our equation to not go into negatives or remainders on division. 
+
+From testing I did find that there are posbile solutions where the equation starts out by going into a fraction but in this project that is not what we are looking for.
+
+Adding almost the same code for another 4 lists of operands and operators, I added a file which checks solutions of sizes 2 3 4 5 and this adds around 100 thousand extra iterations to the program. As seen above the extra lists of size 2 3 4 5 add up to around 210 thousand iterations but that is cut in half by our if statements mentioned above. For the code itself I cannot come up with a way to write a more general function to handle all of my lists as there are 8 extra lists of all different sizes and they need 4 different types of equation blueprint hence repetitive code.
+
+One other approach that I have tried and tested is checking combinations of operators vs permutations of operands. This gives us 56 combinations of operators and still 720 permutations for a list of size 6 with 5 operators. This gives 40320 iterations if all numbers are distinct. This 40 thousand looks a lot better than the 737 thousand for the other approach but this approach from testing it quite a lot seems to leave out some solutions. This is because combinations do not have order and there are some other distinct solutions which need a specific order of the operators, however the first approach does find those solutions with the expense of more iterations and checking.
